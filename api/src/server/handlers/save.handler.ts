@@ -19,14 +19,6 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     return;
   }
 
-  const finish = async (): Promise<void> => {
-    await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
-    await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
-    await dataSource.manager.save(riceCollect);
-    await dataSource.manager.remove(riceCollectLink);
-    res.status(200).send();
-  };
-
   const { amount: amountStr } = req.body;
   const amount = Number(amountStr);
   if (isNaN(amount)) {
@@ -39,8 +31,15 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     nextTime: new Date(Date.now() + 1000 * 60 * 60 * 4),
   });
 
+  const finishHarvest = async (): Promise<void> => {
+    await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
+    await dataSource.manager.save(riceCollect);
+    await dataSource.manager.remove(riceCollectLink);
+  };
+
   if (amount === 0) {
-    await finish();
+    await finishHarvest();
+    res.status(200).send();
     return;
   }
 
@@ -59,5 +58,7 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     ].join('\n'),
   });
 
-  await finish();
+  await finishHarvest();
+  await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
+  res.status(200).send();
 };
