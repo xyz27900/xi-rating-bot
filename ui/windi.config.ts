@@ -2,7 +2,7 @@ import { defineConfig } from 'windicss/helpers';
 
 export default defineConfig({
   safelist: [
-    'bg-gray', 'bg-green', 'bg-red', 'bg-yellow',
+    'bg-blue', 'bg-gray', 'bg-green', 'bg-red', 'bg-yellow',
     'bg-gray-light', 'bg-green-light', 'bg-red-light', 'bg-yellow-light',
     'border-gray', 'border-green', 'border-red', 'border-yellow',
   ],
@@ -10,7 +10,6 @@ export default defineConfig({
     extend: {
       colors: {
         blue: {
-          light: '',
           DEFAULT: '#3867d6',
         },
         gray: {
