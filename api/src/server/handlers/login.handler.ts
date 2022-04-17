@@ -1,5 +1,4 @@
 import { Request, Response } from 'express';
-import { bot } from '@/bot';
 import { dataSource } from '@/data.source';
 import { RiceCollect } from '@/entity/rice.collect.entity';
 import { UserTool } from '@/entity/user.tool.entity';
