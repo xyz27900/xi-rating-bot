@@ -32,7 +32,7 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
   });
 
   const finishHarvest = async (): Promise<void> => {
-    await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
+    // await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
     await dataSource.manager.save(riceCollect);
     await dataSource.manager.remove(riceCollectLink);
   };
