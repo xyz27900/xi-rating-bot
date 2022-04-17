@@ -26,10 +26,15 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     return;
   }
 
-  const riceCollect = dataSource.manager.create(RiceCollect, {
-    user,
-    nextTime: new Date(Date.now() + 1000 * 60 * 60 * 4),
+  let riceCollect = await dataSource.manager.findOneBy(RiceCollect, {
+    user: { id: user.id },
   });
+
+  if (!riceCollect) {
+    riceCollect = dataSource.manager.create(RiceCollect, { user });
+  }
+
+  riceCollect.nextTime = new Date(Date.now() + 1000 * 60 * 60 * 4);
 
   const finishHarvest = async (): Promise<void> => {
     // await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
