@@ -45,6 +45,7 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     ].join('\n'),
   });
 
+  await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
   await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
   await dataSource.manager.remove(riceCollectLink);
 

@@ -45,6 +45,4 @@ export const loginHandler = async (req: Request, res: Response): Promise<void> =
   };
 
   res.status(200).send(data);
-
-  await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
 };
