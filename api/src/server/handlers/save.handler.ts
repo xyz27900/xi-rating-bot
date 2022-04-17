@@ -38,27 +38,32 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
   };
 
   if (amount === 0) {
+    const text = [
+      `${mention(user)}, у тебя не получилось ничего собрать 🙁`,
+      'Отдохни и попробуй еще раз 🙌',
+    ].join('\n\n');
+
     await finishHarvest();
-    res.status(200).send();
-    return;
+    await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
+  } else {
+    const balanceValue = 10 * amount;
+    const ratingValue = 5 * amount;
+
+    const balanceText = await increaseBalance({ user, value: balanceValue });
+
+    const text = await increaseRating({
+      user,
+      value: ratingValue,
+      reason: [
+        `${mention(user)}, рис собран 🌾`,
+        `Твой рейтинг увеличился на *${ratingValue}* баллов 👍`,
+        balanceText,
+      ].join('\n'),
+    });
+
+    await finishHarvest();
+    await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
   }
 
-  const balanceValue = 10 * amount;
-  const ratingValue = 5 * amount;
-
-  const balanceText = await increaseBalance({ user, value: balanceValue });
-
-  const text = await increaseRating({
-    user,
-    value: ratingValue,
-    reason: [
-      `${mention(user)}, рис собран 🌾`,
-      `Твой рейтинг увеличился на *${ratingValue}* баллов 👍`,
-      balanceText,
-    ].join('\n'),
-  });
-
-  await finishHarvest();
-  await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
   res.status(200).send();
 };
