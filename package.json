@@ -1,0 +1,7 @@
+{
+  "name": "social-credits",
+  "workspaces": [
+    "api",
+    "ui"
+  ]
+}

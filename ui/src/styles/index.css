@@ -1,0 +1,14 @@
+html,
+body,
+#app {
+  height: 100%;
+}
+
+.Vue-Toastification__toast--error {
+  background-color: #ffffff;
+  border-bottom: 2px solid #e84118;
+}
+
+.Vue-Toastification__toast-body {
+  color: #000000;
+}
