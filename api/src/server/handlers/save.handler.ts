@@ -3,6 +3,7 @@ import { bot } from '@/bot';
 import { increaseBalance } from '@/bot/balance/increase.balance';
 import { increaseRating } from '@/bot/rating/increase.rating';
 import { dataSource } from '@/data.source';
+import { RiceCollect } from '@/entity/rice.collect.entity';
 import { getRiceCollectLinkHelper } from '@/server/helpers/get.rice.collect.link.helper';
 import { getUserHelper } from '@/server/helpers/get.user.helper';
 import { mention } from '@/utils/telegram';
@@ -45,8 +46,14 @@ export const saveHandler = async (req: Request, res: Response): Promise<void> =>
     ].join('\n'),
   });
 
+  const riceCollect = dataSource.manager.create(RiceCollect, {
+    user,
+    nextTime: new Date(Date.now() + 1000 * 60 * 60 * 4),
+  });
+
   await bot.api.editMessageReplyMarkup(riceCollectLink.chatId, riceCollectLink.messageId);
   await bot.api.sendMessage(riceCollectLink.chatId, text, { parse_mode: 'Markdown' });
+  await dataSource.manager.save(riceCollect);
   await dataSource.manager.remove(riceCollectLink);
 
   res.status(200).send();

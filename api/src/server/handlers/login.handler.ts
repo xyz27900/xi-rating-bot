@@ -16,7 +16,7 @@ export const loginHandler = async (req: Request, res: Response): Promise<void> =
     return;
   }
 
-  let riceCollect = await dataSource.manager.findOneBy(RiceCollect, {
+  const riceCollect = await dataSource.manager.findOneBy(RiceCollect, {
     user: { id: user.id },
   });
 
@@ -24,13 +24,6 @@ export const loginHandler = async (req: Request, res: Response): Promise<void> =
     res.status(403).send('Wait for next time');
     return;
   }
-
-  if (!riceCollect) {
-    riceCollect = dataSource.manager.create(RiceCollect, { user });
-  }
-
-  riceCollect.nextTime = new Date(Date.now() + 1000 * 60 * 60 * 4);
-  await dataSource.manager.save(riceCollect);
 
   const userTools = await dataSource.manager.find(UserTool, {
     where: { user },
