@@ -3,5 +3,11 @@
   "workspaces": [
     "api",
     "ui"
-  ]
+  ],
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^7.0.0"
+  }
 }

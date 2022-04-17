@@ -6,6 +6,11 @@ migrate:
 start: migrate
 	node /app/main.js
 
+.PHONY: lint
+lint:
+	cd api && npm run lint
+	cd ui && npm run lint
+
 .PHONY: build
 build:
 	docker buildx build --platform linux/amd64 -t ${APP_NAME} .

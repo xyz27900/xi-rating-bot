@@ -1,4 +1,5 @@
 .idea/
 .github/
+.husky/
 node_modules/
 build/
