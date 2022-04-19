@@ -127,14 +127,12 @@ jobs:
           format: markdown
           disable_web_page_preview: true
           message: |
-            ✅ *Deployed to Heroku*
+            *[Stage] Deployed to Heroku ✅*
 
-            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to *STAGE*.
+            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to _stage environment_.
 
-            @xi_rating_stage_bot
+            _Bot_ @xi_rating_stage_bot
 
-            ```
-            ${{ github.sha }}
-            ```
+            _Build SHA_ `${{ github.sha }}`
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}

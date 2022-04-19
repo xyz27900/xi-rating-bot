@@ -111,3 +111,21 @@ jobs:
           heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Send message to Telegram channel
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_DEV_CHANNEL_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            *[Production] Deployed to Heroku ✅*
+
+            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to _production environment_.
+
+            _Bot_ @xi_rating_bot
+
+            _Build SHA_ `${{ github.sha }}`
+        env:
+          GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
