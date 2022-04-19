@@ -13,7 +13,7 @@ import { isDevelopment } from '@/env';
 import { messageHandler } from '@/handler/message.handler';
 import { joinedMiddleware } from '@/middleware/joined.middleware';
 
-export const initBot = async (botPath: string): Promise<Bot> => {
+export const initBot = async (botRoute: string): Promise<Bot> => {
   bot.command('join', joinCommand);
   bot.command('help', helpCommand);
   bot.command('me', joinedMiddleware, meCommand);
@@ -41,7 +41,7 @@ export const initBot = async (botPath: string): Promise<Bot> => {
     url = `https://${DOMAIN}`;
   }
 
-  await bot.api.setWebhook(`${url}/${botPath}`);
+  await bot.api.setWebhook(`${url}/${botRoute}`);
 
   return bot;
 };

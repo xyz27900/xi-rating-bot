@@ -10,10 +10,10 @@ import { NODE_ENV } from '@/env';
 const bootstrap = async (): Promise<void> => {
   await dataSource.initialize();
 
-  const botPath = `/api/${BOT_TOKEN}`;
+  const botRoute = `api/${BOT_TOKEN}`;
 
-  const bot = await initBot(botPath);
-  const server = await initServer(bot, botPath);
+  const bot = await initBot(botRoute);
+  const server = await initServer(bot, botRoute);
 
   server.listen(PORT, () => {
     logger.log(`Application launched in ${NODE_ENV} mode on port ${PORT}`, 'App');
