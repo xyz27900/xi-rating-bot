@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 jobs:
-  qa:
+  quality-assurance:
     runs-on: ubuntu-latest
 
     steps:
