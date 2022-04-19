@@ -1,4 +1,4 @@
-name: quality-assurance
+name: Quality Assurance
 
 on:
   push:
@@ -11,9 +11,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Cache node modules
         uses: actions/cache@v2
         env:

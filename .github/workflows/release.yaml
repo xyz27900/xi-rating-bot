@@ -10,9 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -61,9 +58,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Cache node modules
         uses: actions/cache@v2
         env:
@@ -100,9 +94,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
       - name: Deploy to Heroku
         run: |
           echo $HEROKU_API_KEY | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
