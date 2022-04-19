@@ -18,7 +18,7 @@ build:
 
 .PHONY: tag
 tag: build
-	docker tag $(APP_NAME) registry.heroku.com/${APP_NAME}/web
+	docker tag ${APP_NAME} registry.heroku.com/${APP_NAME}/web
 
 .PHONY: push
 push: tag
