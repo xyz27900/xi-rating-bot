@@ -28,7 +28,7 @@ RUN npm run build
 FROM node:lts-alpine as runner
 ARG NODE_ENV
 
-RUN apk add make
+RUN apk add curl make
 
 WORKDIR /app
 
