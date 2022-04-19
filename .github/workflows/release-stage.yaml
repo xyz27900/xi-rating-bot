@@ -23,8 +23,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Copy package-lock.json
-        run: |
-          cp package-lock.json api/package-lock.json
+        run: cp package-lock.json api/package-lock.json
 
       - name: Set npm auth token
         run: echo //npm.pkg.github.com/:_authToken=$ACCESS_TOKEN >> .npmrc
