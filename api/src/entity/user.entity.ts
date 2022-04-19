@@ -1,4 +1,4 @@
-import { UserModel } from 'social-credits-common/build/cjs/models/user.model';
+import { UserModel } from '@xyz27900/xi-rating-bot-common/build/cjs/models/user.model';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()

@@ -11,8 +11,8 @@
 </template>
 
 <script lang="ts" setup>
-import { Subject, SubjectType } from 'social-credits-common/build/es/models/subject.model';
-import { Tool } from 'social-credits-common/build/es/models/tool.model';
+import { Subject, SubjectType } from '@xyz27900/xi-rating-bot-common/build/es/models/subject.model';
+import { Tool } from '@xyz27900/xi-rating-bot-common/build/es/models/tool.model';
 import { computed } from 'vue';
 import { useToast } from 'vue-toastification';
 import GameSubject from '@/components/game/GameSubject.vue';

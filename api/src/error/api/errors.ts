@@ -1,5 +1,5 @@
-import { ApiErrorCode } from 'social-credits-common/build/cjs/api/error';
-import { HttpStatus } from 'social-credits-common/build/cjs/api/status';
+import { ApiErrorCode } from '@xyz27900/xi-rating-bot-common/build/cjs/api/error';
+import { HttpStatus } from '@xyz27900/xi-rating-bot-common/build/cjs/api/status';
 import { ApiError } from '@/error/api/index';
 
 export const errInvalidQuery = ApiError.create(
@@ -39,7 +39,13 @@ export const errHarvestTimeout = ApiError.create(
 );
 
 export const errInvalidAmount = ApiError.create(
-  'Неверное количество риса',
+  'Неправильное количество риса',
   ApiErrorCode.InvalidAmount,
   HttpStatus.BAD_REQUEST
+);
+
+export const errInternalError = ApiError.create(
+  'Ошибка на сервере',
+  ApiErrorCode.InternalError,
+  HttpStatus.INTERNAL_SERVER_ERROR
 );

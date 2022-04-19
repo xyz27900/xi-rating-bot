@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
-import { logger } from 'social-credits-common/build/es/utils/logger';
+import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';
 import { initBot } from '@/bot';
 import { BOT_TOKEN, PORT, SENTRY_DSN } from '@/config';
 import { dataSource } from '@/data.source';

@@ -1,4 +1,4 @@
-import { LoginArgs, LoginReply } from 'social-credits-common/build/es/dto/login.dto';
+import { LoginArgs, LoginReply } from '@xyz27900/xi-rating-bot-common/build/es/dto/login.dto';
 import { AxiosReply, AxiosRequestConfig, Rest } from '@/utils/rest';
 
 export const login = (args: LoginArgs, config?: AxiosRequestConfig): AxiosReply<LoginReply> => {

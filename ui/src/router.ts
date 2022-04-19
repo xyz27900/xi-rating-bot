@@ -22,7 +22,7 @@ const routes: RouteRecordRaw[] = [
         component: ViewSuccess,
       },
       {
-        path: '/help',
+        path: 'help',
         name: 'help',
         component: ViewHelp,
       },

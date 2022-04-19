@@ -1,7 +1,7 @@
-import { ApiErrorCode } from 'social-credits-common/build/es/api/error';
+import { ApiErrorCode } from '@xyz27900/xi-rating-bot-common/build/es/api/error';
 
 export const errorIcons: Record<ApiErrorCode, string> = {
-  [ApiErrorCode.InvalidQuery]: '🔠',
+  [ApiErrorCode.InvalidQuery]: '🔡',
   [ApiErrorCode.InvalidId]: '🆔',
   [ApiErrorCode.InvalidHash]: '🔐',
   [ApiErrorCode.UserNotFound]: '🤷‍♂️',

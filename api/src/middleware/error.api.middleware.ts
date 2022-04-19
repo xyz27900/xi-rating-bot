@@ -1,4 +1,4 @@
-import { logger } from 'social-credits-common/build/cjs/utils/logger';
+import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';
 import { ApiError } from '@/error/api';
 import { ApiErrorHandler } from '@/types/api';
 

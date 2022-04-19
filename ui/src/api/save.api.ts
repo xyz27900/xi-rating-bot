@@ -1,4 +1,4 @@
-import { SaveArgs, SaveReply } from 'social-credits-common/build/es/dto/save.dto';
+import { SaveArgs, SaveReply } from '@xyz27900/xi-rating-bot-common/build/es/dto/save.dto';
 import { AxiosReply, AxiosRequestConfig, Rest } from '@/utils/rest';
 
 export const save = (args: SaveArgs, config?: AxiosRequestConfig): AxiosReply<SaveReply> => {

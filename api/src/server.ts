@@ -26,10 +26,10 @@ export const initServer = async (bot: Bot, botRoute: string): Promise<Express> =
     });
   }
 
-  server.use(errorApiMiddleware);
-  server.use(errorBotMiddleware);
-  server.use(errorDbMiddleware);
-  server.use(errorInternalMiddleware);
+  router.use(errorApiMiddleware);
+  router.use(errorBotMiddleware);
+  router.use(errorDbMiddleware);
+  router.use(errorInternalMiddleware);
 
   return server;
 };

@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/node';
+import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';
 import { BotError, GrammyError } from 'grammy';
-import { logger } from 'social-credits-common/build/es/utils/logger';
 import { ApiErrorHandler } from '@/types/api';
 
 export const errorBotMiddleware: ApiErrorHandler = async (err, req, res, next) => {

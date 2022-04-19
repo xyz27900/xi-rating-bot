@@ -1,14 +1,19 @@
 {
-  "name": "social-credits-ui",
+  "name": "@xyz27900/xi-rating-bot-ui",
   "version": "0.1.0",
   "author": "Evgeniy Kozlov",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xyz27900/xi-rating-bot.git"
+  },
   "scripts": {
     "dev": "vite",
     "lint": "eslint --no-fix ./src && vue-tsc --noEmit",
     "build": "vite build"
   },
   "dependencies": {
+    "@xyz27900/xi-rating-bot-common": "*",
     "axios": "^0.26.1",
     "marked": "^4.0.14",
     "vue": "^3.2.31",

@@ -1,9 +1,9 @@
-import { LoginReply } from 'social-credits-common/build/cjs/dto/login.dto';
-import { Tool } from 'social-credits-common/build/cjs/models/tool.model';
+import { LoginReply } from '@xyz27900/xi-rating-bot-common/build/cjs/dto/login.dto';
+import { Tool } from '@xyz27900/xi-rating-bot-common/build/cjs/models/tool.model';
 import { errHarvestTimeout } from '@/error/api/errors';
 import { riceService } from '@/service/rice.service';
 import { toolService } from '@/service/tool.service';
-import { AuthApiRequest, ApiRouteHandler } from '@/types/api';
+import { ApiRouteHandler, AuthApiRequest } from '@/types/api';
 
 export const loginRoute: ApiRouteHandler<LoginReply> = async (req, res): Promise<void> => {
   const { user, harvestLink } = req as AuthApiRequest;
@@ -15,11 +15,11 @@ export const loginRoute: ApiRouteHandler<LoginReply> = async (req, res): Promise
 
   const userTools = await toolService.getUserTools(user);
 
-  const data: LoginReply = {
+  const response: LoginReply = {
     user: user.toJSON(),
     subjects: harvestLink.subjects,
     tools: userTools.map(tool => tool.name) as Tool[],
   };
 
-  res.status(200).send(data);
+  res.status(200).send(response);
 };

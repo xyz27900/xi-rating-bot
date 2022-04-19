@@ -1,5 +1,5 @@
+import { ApiErrorData } from '@xyz27900/xi-rating-bot-common/build/cjs/api/error';
 import { NextFunction, Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { ApiErrorData } from 'social-credits-common/build/cjs/api/error';
 import { RiceCollectLink } from '@/entity/rice.collect.link.entity';
 import { User } from '@/entity/user.entity';
 

@@ -11,7 +11,7 @@
 </template>
 
 <script lang="ts" setup>
-import { Tool } from 'social-credits-common/build/es/models/tool.model';
+import { Tool } from '@xyz27900/xi-rating-bot-common/build/es/models/tool.model';
 import { defineProps, PropType } from 'vue';
 import UiSquare from '@/components/ui/UiSquare.vue';
 import { toolIcons } from '@/constants/tool.constants';

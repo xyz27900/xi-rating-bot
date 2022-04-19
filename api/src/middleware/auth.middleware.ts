@@ -37,6 +37,10 @@ export const authMiddleware: ApiMiddleware = async (req, res, next) => {
     throw errHarvestLinkNotFound;
   }
 
+  if (rid !== riceCollectLink.id) {
+    throw errHarvestLinkNotFound;
+  }
+
   (req as AuthApiRequest).user = user;
   (req as AuthApiRequest).harvestLink = riceCollectLink;
 

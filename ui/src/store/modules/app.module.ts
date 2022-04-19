@@ -1,6 +1,6 @@
-import { LoginArgs, LoginReply } from 'social-credits-common/build/es/dto/login.dto';
-import { SaveArgs, SaveReply } from 'social-credits-common/build/es/dto/save.dto';
-import { UserModel } from 'social-credits-common/build/es/models/user.model';
+import { LoginArgs, LoginReply } from '@xyz27900/xi-rating-bot-common/build/es/dto/login.dto';
+import { SaveArgs, SaveReply } from '@xyz27900/xi-rating-bot-common/build/es/dto/save.dto';
+import { UserModel } from '@xyz27900/xi-rating-bot-common/build/es/models/user.model';
 import { Action, Module, Mutation, VuexModule } from 'vuex-class-modules';
 import { login } from '@/api/login.api';
 import { save } from '@/api/save.api';

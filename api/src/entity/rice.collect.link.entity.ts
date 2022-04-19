@@ -1,4 +1,4 @@
-import { SubjectType } from 'social-credits-common/build/cjs/models/subject.model';
+import { SubjectType } from '@xyz27900/xi-rating-bot-common/build/cjs/models/subject.model';
 import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { User } from '@/entity/user.entity';
 

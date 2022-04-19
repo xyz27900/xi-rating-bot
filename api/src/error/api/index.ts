@@ -1,5 +1,5 @@
-import { ApiErrorCode, ApiErrorData } from 'social-credits-common/build/cjs/api/error';
-import { HttpStatus } from 'social-credits-common/build/cjs/api/status';
+import { ApiErrorCode, ApiErrorData } from '@xyz27900/xi-rating-bot-common/build/cjs/api/error';
+import { HttpStatus } from '@xyz27900/xi-rating-bot-common/build/cjs/api/status';
 
 export class ApiError {
   public data: ApiErrorData;

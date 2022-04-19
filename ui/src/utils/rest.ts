@@ -1,5 +1,5 @@
+import { ApiErrorCode, ApiErrorData } from '@xyz27900/xi-rating-bot-common/build/es/api/error';
 import Axios, { AxiosRequestConfig as _AxiosRequestConfig, AxiosResponse } from 'axios';
-import { ApiErrorCode, ApiErrorData } from 'social-credits-common/build/es/api/error';
 import { arrayIncludes } from '@/utils/array';
 import { objectValues } from '@/utils/object';
 

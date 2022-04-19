@@ -1,20 +1,25 @@
 {
-  "name": "social-credits-api",
+  "name": "@xyz27900/xi-rating-bot-api",
   "version": "0.1.0",
   "author": "Evgeniy Kozlov",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xyz27900/xi-rating-bot.git"
+  },
   "scripts": {
-    "start": "ts-node -r tsconfig-paths/register src/main.ts",
+    "start": "ts-node -r tsconfig-paths/register ./src/main.ts",
     "dev": "nodemon",
     "lint": "eslint --no-fix ./src",
     "build": "rm -rf ./build && tsc && tscpaths -p tsconfig.json -s ./src -o ./build",
     "typeorm": "ts-node -r tsconfig-paths/register ./node_modules/typeorm/cli",
-    "typeorm:migrate": "npm run typeorm -- migration:run --dataSource src/data.source.ts",
-    "typeorm:drop": "npm run typeorm -- schema:drop --dataSource src/data.source.ts"
+    "typeorm:migrate": "npm run typeorm -- migration:run --dataSource ./src/data.source.ts",
+    "typeorm:drop": "npm run typeorm -- schema:drop --dataSource ./src/data.source.ts"
   },
   "dependencies": {
     "@sentry/node": "^6.19.6",
     "@sentry/tracing": "^6.19.6",
+    "@xyz27900/xi-rating-bot-common": "*",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
     "express-promise-router": "^4.1.1",

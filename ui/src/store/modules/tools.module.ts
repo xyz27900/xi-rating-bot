@@ -1,4 +1,4 @@
-import { Tool } from 'social-credits-common/build/es/models/tool.model';
+import { Tool } from '@xyz27900/xi-rating-bot-common/build/es/models/tool.model';
 import { Module, Mutation, VuexModule } from 'vuex-class-modules';
 
 @Module

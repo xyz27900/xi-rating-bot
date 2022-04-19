@@ -1,5 +1,6 @@
+import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';
 import { Bot } from 'grammy';
-import tunnel from 'localtunnel';
+import localtunnel from 'localtunnel';
 import { shopCallback } from '@/callback/shop.callback';
 import { helpCommand } from '@/command/help.command';
 import { joinCommand } from '@/command/join.command';
@@ -31,7 +32,15 @@ export const initBot = async (botPath: string): Promise<Bot> => {
     { command: 'help', description: 'Как пользоваться ботом' },
   ]);
 
-  const url = isDevelopment ? (await tunnel(PORT)).url : `https://${DOMAIN}`;
+  let url: string;
+  if (isDevelopment) {
+    const tunnel = await localtunnel(PORT);
+    url = tunnel.url;
+    logger.log(`Webhook URL ${url} was set`, 'Bot');
+  } else {
+    url = `https://${DOMAIN}`;
+  }
+
   await bot.api.setWebhook(`${url}/${botPath}`);
 
   return bot;

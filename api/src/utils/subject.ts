@@ -1,4 +1,4 @@
-import { SubjectType, subjectTypes } from 'social-credits-common/build/cjs/models/subject.model';
+import { SubjectType, subjectTypes } from '@xyz27900/xi-rating-bot-common/build/cjs/models/subject.model';
 import { randomElement } from '@/utils/array';
 
 export const randomSubjects = (length: number): SubjectType[] => {

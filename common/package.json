@@ -1,8 +1,12 @@
 {
-  "name": "social-credits-common",
+  "name": "@xyz27900/xi-rating-bot-common",
   "version": "0.1.0",
   "author": "Evgeniy Kozlov",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xyz27900/xi-rating-bot.git"
+  },
   "scripts": {
     "lint": "eslint --no-fix ./src",
     "build": "rm -rf build && mkdir -p ./build && npm run build:cjs && npm run build:es",

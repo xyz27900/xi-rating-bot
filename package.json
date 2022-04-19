@@ -1,5 +1,5 @@
 {
-  "name": "social-credits",
+  "name": "@xyz27900/xi-rating-bot",
   "workspaces": [
     "api",
     "common",
