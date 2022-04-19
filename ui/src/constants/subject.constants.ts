@@ -1,4 +1,4 @@
-import { SubjectType } from '@/models/subject.model';
+import { SubjectType } from 'social-credits-common/build/es/models/subject.model';
 
 export const subjectIcons: Record<SubjectType, string> = {
   empty: '',

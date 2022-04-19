@@ -1,8 +1,8 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router';
 import AuthMiddleware from '@/AuthMiddleware.vue';
+import ViewError from '@/views/ViewError.vue';
 import ViewHelp from '@/views/ViewHelp.vue';
 import ViewMain from '@/views/ViewMain.vue';
-import ViewNotFound from '@/views/ViewNotFound.vue';
 import ViewSuccess from '@/views/ViewSuccess.vue';
 
 const routes: RouteRecordRaw[] = [
@@ -29,9 +29,9 @@ const routes: RouteRecordRaw[] = [
     ],
   },
   {
-    path: '/404',
-    name: 'not-found',
-    component: ViewNotFound,
+    path: '/error',
+    name: 'error',
+    component: ViewError,
   },
 ];
 

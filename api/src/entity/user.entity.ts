@@ -1,3 +1,4 @@
+import { UserModel } from 'social-credits-common/build/cjs/models/user.model';
 import { Column, Entity, PrimaryColumn } from 'typeorm';
 
 @Entity()
@@ -19,4 +20,15 @@ export class User {
 
   @Column({ nullable: true })
   username?: string;
+
+  get name(): string {
+    return this.lastName ? `${this.firstName} ${this.lastName}` : this.firstName;
+  }
+
+  public toJSON(): UserModel {
+    return {
+      id: this.id,
+      name: this.name,
+    };
+  }
 }

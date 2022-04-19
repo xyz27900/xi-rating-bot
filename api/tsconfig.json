@@ -12,7 +12,7 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitAny": true,
-    "useUnknownInCatchVariables": true,
+    "useUnknownInCatchVariables": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,

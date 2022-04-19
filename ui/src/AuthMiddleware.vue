@@ -27,11 +27,14 @@ const router = useRouter();
 const loading = ref(true);
 
 const init = async (): Promise<void> => {
-  const res = await appModule.login(route.query);
+  const res = await appModule.login({ query: route.query });
   if (res.__state === 'success') {
     loading.value = false;
   } else {
-    await router.replace({ name: 'not-found' });
+    await router.replace({
+      name: 'error',
+      query: res.data,
+    });
   }
 };
 

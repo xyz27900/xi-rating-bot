@@ -2,6 +2,7 @@
   "name": "social-credits",
   "workspaces": [
     "api",
+    "common",
     "ui"
   ],
   "scripts": {

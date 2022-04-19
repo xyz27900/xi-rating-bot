@@ -14,7 +14,7 @@
     "strictFunctionTypes": true,
     "strictBindCallApply": true,
     "noImplicitAny": true,
-    "useUnknownInCatchVariables": true,
+    "useUnknownInCatchVariables": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
@@ -34,6 +34,9 @@
   },
   "files": [
     "vite.config.ts"
+  ],
+  "include": [
+    "src"
   ],
   "exclude": [
     "node_modules"

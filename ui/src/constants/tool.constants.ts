@@ -1,4 +1,4 @@
-import { Tool } from '@/models/tool.model';
+import { Tool } from 'social-credits-common/build/es/models/tool.model';
 
 export const toolIcons: Record<Tool, string> = {
   axe: '🪓',

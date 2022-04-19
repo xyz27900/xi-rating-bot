@@ -11,13 +11,13 @@
 </template>
 
 <script lang="ts" setup>
+import { Subject, SubjectType } from 'social-credits-common/build/es/models/subject.model';
+import { Tool } from 'social-credits-common/build/es/models/tool.model';
 import { computed } from 'vue';
 import { useToast } from 'vue-toastification';
 import GameSubject from '@/components/game/GameSubject.vue';
 import { subjectColors, subjectIcons } from '@/constants/subject.constants';
 import { toolIcons } from '@/constants/tool.constants';
-import { Subject, SubjectType } from '@/models/subject.model';
-import { Tool } from '@/models/tool.model';
 import { appModule, subjectsModule, toolsModule } from '@/store';
 
 const toast = useToast();
@@ -36,7 +36,7 @@ const indexToCoordinates = (index: number): [number, number] => {
 };
 
 const subjects = computed<Subject[]>(() => {
-  return subjectsModule.subjects.flat().map((type, index) => {
+  return subjectsModule.subjects.map((type, index) => {
     const [x, y] = indexToCoordinates(index);
 
     const highlighted = appModule.position[0] === x && appModule.position[1] === y;

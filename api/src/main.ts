@@ -1,50 +1,36 @@
-import express from 'express';
-import { webhookCallback } from 'grammy';
-import { bot } from '@/bot';
+import * as Sentry from '@sentry/node';
+import * as Tracing from '@sentry/tracing';
+import { logger } from 'social-credits-common/build/es/utils/logger';
+import { initBot } from '@/bot';
+import { BOT_TOKEN, PORT, SENTRY_DSN } from '@/config';
 import { dataSource } from '@/data.source';
-import { isDevelopment, isProduction } from '@/env';
-import { loginHandler } from '@/server/handlers/login.handler';
-import { saveHandler } from '@/server/handlers/save.handler';
+import { NODE_ENV } from '@/env';
+import { initServer } from '@/server';
 
 const bootstrap = async (): Promise<void> => {
   await dataSource.initialize();
 
-  const domain = String(process.env.DOMAIN);
-  const port = Number(process.env.PORT);
-  const secretPath = String(process.env.BOT_TOKEN);
-  const app = express();
+  const botPath = `/api/${BOT_TOKEN}`;
 
-  await bot.api.setMyCommands([
-    { command: 'join', description: 'Присоединиться к партии' },
-    { command: 'me', description: 'Узнать свой социальный рейтинг' },
-    { command: 'rice', description: 'Отправиться собирать рис на полях империи' },
-    { command: 'shop', description: 'Заглянуть в магазин' },
-    { command: 'tip', description: 'Спросить у партии совет' },
-    { command: 'help', description: 'Как пользоваться ботом' },
-  ]);
+  const bot = await initBot(botPath);
+  const server = await initServer(bot, botPath);
 
-  app.use(express.json());
-  app.get('/api/login', loginHandler);
-  app.post('/api/save', saveHandler);
-
-  if (!isDevelopment) {
-    app.use(express.static('public'));
-    app.get('*', (_, res) => {
-      res.sendFile('index.html', { root: 'public' });
-    });
-  }
-
-  if (isProduction) {
-    app.use(`/api/${secretPath}`, webhookCallback(bot, 'express'));
-  }
-
-  app.listen(port, async () => {
-    if (isProduction) {
-      await bot.api.setWebhook(`https://${domain}/api/${secretPath}`);
-    } else {
-      await bot.start();
-    }
-  });
+  server.listen(PORT, () => logger.log(`Server started on port ${PORT}`, 'App'));
 };
 
-bootstrap();
+Tracing.addExtensionMethods();
+
+Sentry.init({
+  dsn: SENTRY_DSN,
+  environment: NODE_ENV,
+  tracesSampleRate: 1.0,
+});
+
+const transaction = Sentry.startTransaction({
+  op: 'bootstrap',
+  name: 'bootstrap',
+});
+
+bootstrap()
+  .catch((err) => Sentry.captureException(err))
+  .finally(() => transaction.finish());

@@ -9,6 +9,7 @@ start: migrate
 .PHONY: lint
 lint:
 	cd api && npm run lint
+	cd common && npm run lint
 	cd ui && npm run lint
 
 .PHONY: build

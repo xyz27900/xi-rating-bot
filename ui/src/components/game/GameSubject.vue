@@ -23,9 +23,9 @@
 </template>
 
 <script lang="ts" setup>
+import { Subject } from 'social-credits-common/build/es/models/subject.model';
 import { defineEmits, defineProps, PropType } from 'vue';
 import UiSquare from '@/components/ui/UiSquare.vue';
-import { Subject } from '@/models/subject.model';
 
 const props = defineProps({
   subject: {
