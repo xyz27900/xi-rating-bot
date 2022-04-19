@@ -15,7 +15,9 @@ const bootstrap = async (): Promise<void> => {
   const bot = await initBot(botPath);
   const server = await initServer(bot, botPath);
 
-  server.listen(PORT, () => logger.log(`Server started on port ${PORT}`, 'App'));
+  server.listen(PORT, () => {
+    logger.log(`Application launched in ${NODE_ENV} mode on port ${PORT}`, 'App');
+  });
 };
 
 Tracing.addExtensionMethods();

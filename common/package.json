@@ -12,8 +12,8 @@
     "build": "rm -rf build && mkdir -p ./build && npm run build:cjs && npm run build:es",
     "build:es": "cp -r ./src build/es && npm run post-build:es",
     "build:cjs": "tsc -p tsconfig.cjs.json && npm run post-build:cjs",
-    "post-build:es": "tscpaths -p tsconfig.es.json -s ./build/es -o ./build/es",
-    "post-build:cjs": "tscpaths -p tsconfig.cjs.json -s ./build/cjs -o ./build/cjs"
+    "post-build:es": "tscpaths -p tsconfig.es.json -s ./src -o ./build/es",
+    "post-build:cjs": "tscpaths -p tsconfig.cjs.json -s ./src -o ./build/cjs"
   },
   "devDependencies": {
     "@types/node": "^17.0.14",

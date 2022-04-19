@@ -1,0 +1,139 @@
+name: Stage Deploy
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Remove other workspaces
+        run: |
+          rm -rf common
+          rm -rf ui
+          rm package*.json
+
+      - name: Set npm auth token
+        run: |
+          cd api
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+
+      - name: Install dependencies
+        run: |
+          cd api
+          npm install
+
+      - name: Lint package
+        run: |
+          cd api
+          npm run lint
+
+      - name: Build package
+        run: |
+          cd api
+          npm run build
+
+  build-ui:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Remove other workspaces
+        run: |
+          rm -rf api
+          rm -rf common
+          rm package*.json
+
+      - name: Set npm auth token
+        run: |
+          cd ui
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+
+      - name: Install dependencies
+        run: |
+          cd ui
+          npm install
+
+      - name: Lint package
+        run: |
+          cd ui
+          npm run lint
+
+      - name: Build package
+        run: |
+          cd ui
+          npm run build
+
+  deploy:
+    needs: [ build-api, build-ui ]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Login to Heroku Container Registry
+        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
+
+      - name: Build Docker image
+        run: docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=staging --tag registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}-stage/web .
+
+      - name: Push Docker image
+        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}-stage/web
+
+      - name: Deploy to Heroku
+        run: |
+          heroku auth:token
+          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}-stage
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Get short SHA
+        id: short_sha
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+
+      - name: Send message to Telegram channel
+        uses: appleboy/telegram-action@master
+        with:
+          to: ${{ secrets.TELEGRAM_DEV_CHANNEL_ID }}
+          token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          format: markdown
+          disable_web_page_preview: true
+          message: |
+            ✅ *Deployed to Heroku*
+
+            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to [STAGE](${{ env.HEROKU_LINK }}).
+
+            ```
+            ${{ github.sha }}
+            ```
+        env:
+          GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
+          HEROKU_LINK: https://${{ secrets.HEROKU_APP_NAME }}-stage.herokuapp.com

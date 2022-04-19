@@ -4,15 +4,14 @@ ARG ACCESS_TOKEN
 WORKDIR /app
 
 COPY ./api ./
-COPY ./package-lock.json ./
 
 RUN echo //npm.pkg.github.com/:_authToken=$ACCESS_TOKEN >> .npmrc
 
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 RUN rm -rf ./node_modules
-RUN npm ci --production
+RUN npm install --production
 
 FROM node:lts-alpine as ui-builder
 ARG ACCESS_TOKEN
@@ -20,11 +19,10 @@ ARG ACCESS_TOKEN
 WORKDIR /app
 
 COPY ./ui ./
-COPY ./package-lock.json ./
 
 RUN echo //npm.pkg.github.com/:_authToken=$ACCESS_TOKEN >> .npmrc
 
-RUN npm ci
+RUN npm install
 RUN npm run build
 
 FROM node:lts-alpine as runner

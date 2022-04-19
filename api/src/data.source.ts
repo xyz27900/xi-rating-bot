@@ -1,6 +1,6 @@
 import * as path from 'path';
 import { DataSource } from 'typeorm';
-import { DATABASE_URL } from '@/config';
+import { DATABASE_URL } from './config';
 import { isDevelopment } from './env';
 
 export const dataSource = new DataSource({

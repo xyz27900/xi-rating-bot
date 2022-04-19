@@ -1,4 +1,4 @@
-name: Release Production
+name: Production Release
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Lint "common" package
         run: |
@@ -75,7 +75,7 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
       - name: Build "common" package
         run: |
@@ -96,9 +96,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Login to Heroku Container Registry
+        run: echo ${{ secrets.HEROKU_API_KEY }} | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
+
+      - name: Build Docker image
+        run: docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=production --tag registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web .
+
+      - name: Push Docker image
+        run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}/web
+
       - name: Deploy to Heroku
         run: |
-          echo $HEROKU_API_KEY | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
-          docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=production --tag registry.heroku.com/${HEROKU_APP_NAME}/web .
-          docker push registry.heroku.com/${HEROKU_APP_NAME}/web
-          heroku container:release web --app ${HEROKU_APP_NAME}
+          heroku auth:token
+          heroku container:release web --app ${{ secrets.HEROKU_APP_NAME }}
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
