@@ -16,7 +16,7 @@ const bootstrap = async (): Promise<void> => {
   const server = await initServer(bot, botRoute);
 
   server.listen(PORT, () => {
-    logger.log(`Application launched in ${NODE_ENV} mode on port ${PORT}`, 'App');
+    logger.log(`Application launched in ${NODE_ENV.toUpperCase()} mode on port ${PORT}`, 'App');
   });
 };
 
