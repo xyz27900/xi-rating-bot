@@ -129,11 +129,10 @@ jobs:
           message: |
             ✅ *Deployed to Heroku*
 
-            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to [STAGE](${{ env.HEROKU_LINK }}).
+            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to [STAGE](https://t.me/xi_rating_stage_bot).
 
             ```
             ${{ github.sha }}
             ```
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
-          HEROKU_LINK: https://${{ secrets.HEROKU_APP_NAME }}-stage.herokuapp.com
