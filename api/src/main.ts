@@ -1,11 +1,11 @@
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';
-import { initBot } from '@/bot';
 import { BOT_TOKEN, PORT, SENTRY_DSN } from '@/config';
+import { initBot } from '@/core/bot';
+import { initServer } from '@/core/server';
 import { dataSource } from '@/data.source';
 import { NODE_ENV } from '@/env';
-import { initServer } from '@/server';
 
 const bootstrap = async (): Promise<void> => {
   await dataSource.initialize();

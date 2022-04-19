@@ -15,6 +15,7 @@ export const initServer = async (bot: Bot, botRoute: string): Promise<Express> =
 
   server.use(router);
   router.use(express.json());
+
   router.use(botRoute, webhookCallback(bot, 'express'));
   router.get('/api/login', authMiddleware, loginRoute);
   router.post('/api/save', authMiddleware, saveRoute);

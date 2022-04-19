@@ -1,5 +1,5 @@
 import { SaveReply } from '@xyz27900/xi-rating-bot-common/build/cjs/dto/save.dto';
-import { bot } from '@/bot';
+import { bot } from '@/core/bot';
 import { errInvalidAmount } from '@/error/api/errors';
 import { giftService } from '@/service/gift.service';
 import { riceService } from '@/service/rice.service';
