@@ -1,19 +1,28 @@
 FROM node:lts-alpine as api-builder
+ARG ACCESS_TOKEN
 
 WORKDIR /app
 
 COPY ./api ./
 COPY ./package-lock.json ./
 
+RUN echo //npm.pkg.github.com/:_authToken=$ACCESS_TOKEN >> .npmrc
+
 RUN npm ci
 RUN npm run build
 
+RUN rm -rf ./node_modules
+RUN npm ci --production
+
 FROM node:lts-alpine as ui-builder
+ARG ACCESS_TOKEN
 
 WORKDIR /app
 
 COPY ./ui ./
 COPY ./package-lock.json ./
+
+RUN echo //npm.pkg.github.com/:_authToken=$ACCESS_TOKEN >> .npmrc
 
 RUN npm ci
 RUN npm run build

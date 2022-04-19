@@ -2,8 +2,8 @@ name: Release
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - 'v*'
 
 jobs:
   quality-assurance:
@@ -26,19 +26,37 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: QA "api" package
+      - name: Lint "common" npm package
+        run: |
+          cd common
+          npm run lint
+
+      - name: Build "common" npm package
+        run: |
+          cd common
+          npm run build
+
+      - name: Lint "api" npm package
         run: |
           cd api
           npm run lint
+
+      - name: Build "api" npm package
+        run: |
+          cd api
           npm run build
 
-      - name: QA "ui" package
+      - name: Lint "ui" npm package
         run: |
           cd ui
           npm run lint
+
+      - name: Build "ui" npm package
+        run: |
+          cd ui
           npm run build
 
-  deploy:
+  npm-packages:
     needs: quality-assurance
     runs-on: ubuntu-latest
 
@@ -46,12 +64,48 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Deploy to Heroku
-        uses: gonuit/heroku-docker-deploy@v1.3.3
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
         with:
-          email: ${{ secrets.HEROKU_EMAIL }}
-          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
-          heroku_app_name: ${{ secrets.HEROKU_APP_NAME }}
-          dockerfile_directory: ./
-          dockerfile_name: Dockerfile
-          process_type: web
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Publish "common" npm package
+        run: |
+          cd common
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+          npm publish
+
+      - name: Publish "api" npm package
+        run: |
+          cd api
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+          npm publish
+
+      - name: Publish "ui" npm package
+        run: |
+          cd ui
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+          npm publish
+
+  deploy:
+    needs: npm-packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        run: |
+          echo $HEROKU_API_KEY | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
+          docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --tag registry.heroku.com/${HEROKU_APP_NAME}/web .
+          docker push registry.heroku.com/${HEROKU_APP_NAME}/web
+          heroku container:release web --app ${HEROKU_APP_NAME}
