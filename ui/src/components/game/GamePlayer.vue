@@ -16,7 +16,7 @@ import UiSquare from '@/components/ui/UiSquare.vue';
 
 defineProps({
   position: {
-    type: Array as PropType<[number, number]>,
+    type: Array as PropType<number[]>,
     required: true,
   },
 });

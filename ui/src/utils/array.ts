@@ -10,3 +10,7 @@ export const splitByChunks = <T> (array: T[], size: number): T[][] => {
   }
   return result;
 };
+
+export const arrayIncludes = <T> (array: T[], element: any): element is T => {
+  return array.includes(element);
+};

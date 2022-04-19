@@ -1,0 +1,104 @@
+name: Release Production
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  quality-assurance:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint "common" package
+        run: |
+          cd common
+          npm run lint
+
+      - name: Build "common" package
+        run: |
+          cd common
+          npm run build
+
+      - name: Lint "api" package
+        run: |
+          cd api
+          npm run lint
+
+      - name: Build "api" package
+        run: |
+          cd api
+          npm run build
+
+      - name: Lint "ui" package
+        run: |
+          cd ui
+          npm run lint
+
+      - name: Build "ui" package
+        run: |
+          cd ui
+          npm run build
+
+  npm-packages:
+    needs: quality-assurance
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build "common" package
+        run: |
+          cd common
+          npm run build
+
+      - name: Publish "common" package
+        run: |
+          cd common
+          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
+          npm publish
+
+  deploy:
+    needs: npm-packages
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Deploy to Heroku
+        run: |
+          echo $HEROKU_API_KEY | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
+          docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=production --tag registry.heroku.com/${HEROKU_APP_NAME}/web .
+          docker push registry.heroku.com/${HEROKU_APP_NAME}/web
+          heroku container:release web --app ${HEROKU_APP_NAME}

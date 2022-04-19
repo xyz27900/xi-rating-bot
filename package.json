@@ -1,7 +1,15 @@
 {
-  "name": "social-credits",
+  "name": "@xyz27900/xi-rating-bot",
+  "version": "0.0.0",
+  "author": "Evgeniy Kozlov",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:xyz27900/xi-rating-bot.git"
+  },
   "workspaces": [
     "api",
+    "common",
     "ui"
   ],
   "scripts": {

@@ -9,22 +9,17 @@ start: migrate
 .PHONY: lint
 lint:
 	cd api && npm run lint
+	cd common && npm run lint
 	cd ui && npm run lint
 
-.PHONY: build
-build:
-	docker buildx build --platform linux/amd64 -t ${APP_NAME} .
+.PHONY: patch
+patch:
+	node ./scripts/version.js patch
 
-.PHONY: tag
-tag: build
-	docker tag $(APP_NAME) registry.heroku.com/${APP_NAME}/web
+.PHONY: minor
+minor:
+	node ./scripts/version.js minor
 
-.PHONY: push
-push: tag
-	docker push registry.heroku.com/${APP_NAME}/web
-
-.PHONY: release
-release: push
-	heroku container:release web -a ${APP_NAME}
-
-
+.PHONY: major
+major:
+	node ./scripts/version.js major

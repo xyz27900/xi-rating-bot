@@ -1,5 +1,6 @@
 const environments = ['development', 'staging', 'production'] as const;
 type Environment = typeof environments[number];
+
 const getEnvironment = (): Environment => {
   const { NODE_ENV } = process.env;
   if (NODE_ENV === 'development' || NODE_ENV === 'staging' || NODE_ENV === 'production') {

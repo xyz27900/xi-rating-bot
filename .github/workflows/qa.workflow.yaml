@@ -1,0 +1,58 @@
+name: Quality Assurance
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  check-packages:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Cache node modules
+        uses: actions/cache@v2
+        env:
+          cache-name: cache-node-modules
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint "common" package
+        run: |
+          cd common
+          npm run lint
+
+      - name: Build "common" package
+        run: |
+          cd common
+          npm run build
+
+      - name: Lint "api" package
+        run: |
+          cd api
+          npm run lint
+
+      - name: Build "api" package
+        run: |
+          cd api
+          npm run build
+
+      - name: Lint "ui" package
+        run: |
+          cd ui
+          npm run lint
+
+      - name: Build "ui" package
+        run: |
+          cd ui
+          npm run build

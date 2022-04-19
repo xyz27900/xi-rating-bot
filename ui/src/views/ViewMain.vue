@@ -30,6 +30,7 @@
 <script lang="ts" setup>
 import { ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
+import { useToast } from 'vue-toastification';
 import GameField from '@/components/game/GameField.vue';
 import GamePlayer from '@/components/game/GamePlayer.vue';
 import GameProgress from '@/components/game/GameProgress.vue';
@@ -43,6 +44,7 @@ import { appModule, subjectsModule } from '@/store';
 
 const route = useRoute();
 const router = useRouter();
+const toast = useToast();
 const isSaving = ref(false);
 
 const save = async (): Promise<void> => {
@@ -51,13 +53,14 @@ const save = async (): Promise<void> => {
   const res = await appModule.save({
     query: route.query,
     data: {
-      amount: subjectsModule.riceAmount,
+      value: subjectsModule.riceAmount,
     },
   });
 
   if (res.__state === 'success') {
     await router.replace({ name: 'success' });
   } else {
+    toast.error(res.data.message);
     isSaving.value = false;
   }
 };
