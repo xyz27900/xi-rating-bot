@@ -5,7 +5,7 @@ on:
     types: [ published ]
 
 jobs:
-  send-update:
+  send-release-message:
     runs-on: ubuntu-latest
 
     steps:
