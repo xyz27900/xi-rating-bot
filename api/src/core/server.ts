@@ -8,6 +8,7 @@ import { errorBotMiddleware } from '@/middleware/error.bot.middleware';
 import { errorDbMiddleware } from '@/middleware/error.db.middleware';
 import { errorInternalMiddleware } from '@/middleware/error.internal.middleware';
 import { loginRoute } from '@/route/login.route';
+import { pingRoute } from '@/route/ping.route';
 import { saveRoute } from '@/route/save.route';
 
 export const initServer = async (bot: Bot, botRoute: string): Promise<Express> => {
@@ -19,6 +20,7 @@ export const initServer = async (bot: Bot, botRoute: string): Promise<Express> =
   router.use(`/${botRoute}`, webhookCallback(bot, 'express'));
   router.get('/api/login', authMiddleware, loginRoute);
   router.post('/api/save', authMiddleware, saveRoute);
+  router.get('/api/ping', pingRoute);
 
   if (!isDevelopment) {
     router.use(express.static('public'));
