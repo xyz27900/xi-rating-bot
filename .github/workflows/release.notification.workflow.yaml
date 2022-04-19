@@ -1,4 +1,4 @@
-name: Send Update
+name: Release notification
 
 on:
   release:

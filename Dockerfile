@@ -28,6 +28,7 @@ RUN npm ci
 RUN npm run build
 
 FROM node:lts-alpine as runner
+ARG NODE_ENV
 
 RUN apk add make
 
@@ -38,9 +39,7 @@ COPY --from=api-builder /app/build ./
 COPY --from=ui-builder /app/build ./public
 COPY ./Makefile ./
 
-ENV NODE_ENV production
+ENV NODE_ENV $NODE_ENV
 ENV NODE_TLS_REJECT_UNAUTHORIZED 0
-
-EXPOSE 3000
 
 CMD make migrate && make start
