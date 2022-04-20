@@ -1,6 +1,4 @@
 import { Middleware } from 'grammy';
-import { dataSource } from '@/data.source';
-import { User } from '@/entity/user.entity';
 import { toolService } from '@/service/tool.service';
 import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
@@ -11,7 +9,7 @@ export const shopCallback: Middleware = async (ctx) => {
   }
 
   const { from } = ctx.callbackQuery;
-  const user = await dataSource.manager.findOneBy(User, { id: from.id });
+  const user = await userService.getUserById(from.id);
   if (!user) {
     return;
   }

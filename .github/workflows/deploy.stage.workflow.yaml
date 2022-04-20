@@ -131,8 +131,10 @@ jobs:
 
             New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>stage environment</b>
 
-            <b>🤖 Bot</b> @xi_rating_stage_bot
+            <b>🤖 Bot</b>
+            @xi_rating_stage_bot
 
-            <b>🔐 Build SHA</b> <code>${{ github.sha }}</code>
+            <b>🔐 Build SHA</b>
+            <code>${{ github.sha }}</code>
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}

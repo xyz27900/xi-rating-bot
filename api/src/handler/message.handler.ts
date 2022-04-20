@@ -1,8 +1,6 @@
 import { Middleware } from 'grammy';
-import { dataSource } from '@/data.source';
-import { MessageRating } from '@/entity/message.rating.entity';
-import { User } from '@/entity/user.entity';
 import { ratingService } from '@/service/rating.service';
+import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
 
 export const messageHandler: Middleware = async (ctx) => {
@@ -22,18 +20,14 @@ export const messageHandler: Middleware = async (ctx) => {
     return;
   }
 
-  const userFrom = await dataSource.manager.findOneBy(User, { id: from.id });
-  const userTo = await dataSource.manager.findOneBy(User, { id: to.id });
+  const userFrom = await userService.getUserById(from.id);
+  const userTo = await userService.getUserById(to.id);
 
   if (!userFrom || !userTo) {
     return;
   }
 
-  const messageRating = await dataSource.manager.findOneBy(MessageRating, {
-    user: { id: from.id },
-    messageId: replyMessage.message_id,
-  });
-
+  const messageRating = await ratingService.checkIfAlreadyRated(userFrom, replyMessage.message_id);
   if (messageRating) {
     const text = [
       `${mention(userFrom)}, ты уже оценил это сообщение!`,
@@ -45,8 +39,8 @@ export const messageHandler: Middleware = async (ctx) => {
       parse_mode: 'Markdown',
     });
   } else if (messageText === '+') {
-    await ratingService.increase(ctx, 150, userFrom, userTo);
+    await ratingService.increase(ctx, replyMessage.message_id, userFrom, userTo);
   } else if (messageText === '-') {
-    await ratingService.decrease(ctx, 150, userFrom, userTo);
+    await ratingService.decrease(ctx, replyMessage.message_id, userFrom, userTo);
   }
 };
