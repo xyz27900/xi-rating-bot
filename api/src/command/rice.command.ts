@@ -1,6 +1,7 @@
 import { InlineKeyboard, Middleware } from 'grammy';
 import { v4 } from 'uuid';
 import { DOMAIN } from '@/config';
+import { dataSource } from '@/data.source';
 import { riceService } from '@/service/rice.service';
 import { AuthBotContext } from '@/types/bot';
 import { randomElement } from '@/utils/array';
@@ -13,21 +14,21 @@ export const riceCommand: Middleware = async (ctx) => {
     return;
   }
 
-  const riceCollectLink = await riceService.getUserRiceCollectLink(user);
-  if (riceCollectLink) {
+  let harvestLink = await riceService.getUserHarvestLink(user);
+  if (harvestLink) {
     const text = `${mention(user)}, ты уже собрался собирать рис!`;
 
     await ctx.reply(text, {
-      reply_to_message_id: riceCollectLink.messageId,
+      reply_to_message_id: harvestLink.messageId,
       parse_mode: 'Markdown',
     });
 
     return;
   }
 
-  const riceCollect = await riceService.getUserRiceCollect(user);
-  if (riceCollect && riceCollect.nextTime > new Date()) {
-    const diff = riceCollect.nextTime.getTime() - new Date().getTime();
+  const harvest = await riceService.getUserHarvest(user);
+  if (harvest && harvest.nextTime > new Date()) {
+    const diff = harvest.nextTime.getTime() - new Date().getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
     const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
 
@@ -60,5 +61,6 @@ export const riceCommand: Middleware = async (ctx) => {
     parse_mode: 'Markdown',
   });
 
-  await riceService.createUserCollectLink(linkUUID, user, chatId, message.message_id);
+  harvestLink = await riceService.createUserHarvestLink(linkUUID, user, chatId, message.message_id);
+  await dataSource.manager.save(harvestLink);
 };

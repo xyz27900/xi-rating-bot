@@ -1,10 +1,11 @@
 import { SaveReply } from '@xyz27900/xi-rating-bot-common/build/cjs/dto/save.dto';
 import { bot } from '@/core/bot';
+import { dataSource } from '@/data.source';
 import { errInvalidAmount } from '@/error/api/errors';
 import { giftService } from '@/service/gift.service';
 import { riceService } from '@/service/rice.service';
-import { userService } from '@/service/user.service';
 import { ApiRouteHandler, AuthApiRequest } from '@/types/api';
+import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';
 
 export const saveRoute: ApiRouteHandler<SaveReply> = async (req, res) => {
@@ -25,15 +26,27 @@ export const saveRoute: ApiRouteHandler<SaveReply> = async (req, res) => {
     user.rating += ratingValue;
     user.balance += balanceValue;
 
+    const gifts = await giftService.getGiftsToGive(user);
+    const userGifts = await giftService.createUserGifts(user, gifts);
+
+    await dataSource.manager.save(userGifts);
+    await dataSource.manager.save(user);
+
+    const phrases = [
+      'Великий вождь Xi доволен тобой 😁',
+      'Слава нашему великому вождю! 🤗',
+      'Партия гордится тобой! 😎',
+    ];
+
     const dataText = [
       `${mention(user)}, рис собран 🌾`,
       `Твой рейтинг увеличился на *${ratingValue}* баллов 👍`,
       `Твой кошелек пополнился на *Ұ${balanceValue}* 🤑`,
     ].join('\n');
 
-    const gifts = await giftService.getGiftsToGive(user);
-    const congratulationText = await giftService.giveGiftsToUser(user, gifts);
-    await userService.save(user);
+    const congratulationText = gifts.length > 0
+      ? `*Ты получаешь от партии 🎉*\n${gifts.map(gift => `• ${gift.name}`).join('\n')}`
+      : randomElement(phrases);
 
     text = `${dataText}\n\n${congratulationText}`;
   } else {
@@ -43,7 +56,9 @@ export const saveRoute: ApiRouteHandler<SaveReply> = async (req, res) => {
     ].join('\n\n');
   }
 
-  await riceService.collectRice(user, harvestLink);
+  const harvest = await riceService.updateUserHarvest(user);
+  await dataSource.manager.save(harvest);
+  await dataSource.manager.remove(harvestLink);
 
   res.status(200).send();
 

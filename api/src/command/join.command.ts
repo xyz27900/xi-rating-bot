@@ -1,4 +1,5 @@
 import { Middleware } from 'grammy';
+import { dataSource } from '@/data.source';
 import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
 
@@ -20,6 +21,8 @@ export const joinCommand: Middleware = async (ctx) => {
       lastName: from.last_name,
       username: from.username,
     });
+
+    await dataSource.manager.save(user);
 
     const text = `${mention(user)}, ты присоединился к партии! 🥳`;
     await ctx.reply(text, { parse_mode: 'Markdown' });

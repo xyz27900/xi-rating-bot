@@ -32,17 +32,17 @@ export const authMiddleware: ApiMiddleware = async (req, res, next) => {
     throw errUserNotFound;
   }
 
-  const riceCollectLink = await riceService.getUserRiceCollectLink(user);
-  if (!riceCollectLink) {
+  const harvestLink = await riceService.getUserHarvestLink(user);
+  if (!harvestLink) {
     throw errHarvestLinkNotFound;
   }
 
-  if (rid !== riceCollectLink.id) {
+  if (rid !== harvestLink.id) {
     throw errHarvestLinkNotFound;
   }
 
   (req as AuthApiRequest).user = user;
-  (req as AuthApiRequest).harvestLink = riceCollectLink;
+  (req as AuthApiRequest).harvestLink = harvestLink;
 
   await next();
 };

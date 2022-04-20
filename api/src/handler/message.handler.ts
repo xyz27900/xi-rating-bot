@@ -1,6 +1,10 @@
 import { Middleware } from 'grammy';
-import { ratingService } from '@/service/rating.service';
+import { SELF_DECREASE_IMAGE_URL, SELF_INCREASE_IMAGE_URL } from '@/config';
+import { dataSource } from '@/data.source';
+import { giftService } from '@/service/gift.service';
+import { ratingService } from '@/service/message.rating.service';
 import { userService } from '@/service/user.service';
+import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';
 
 export const messageHandler: Middleware = async (ctx) => {
@@ -27,8 +31,8 @@ export const messageHandler: Middleware = async (ctx) => {
     return;
   }
 
-  const messageRating = await ratingService.checkIfAlreadyRated(userFrom, replyMessage.message_id);
-  if (messageRating) {
+  const isMessageRated = await ratingService.checkIfAlreadyRated(userFrom, replyMessage.message_id);
+  if (isMessageRated) {
     const text = [
       `${mention(userFrom)}, ты уже оценил это сообщение!`,
       'Великого вождя не обманешь! 😠',
@@ -38,9 +42,80 @@ export const messageHandler: Middleware = async (ctx) => {
       reply_to_message_id: replyMessage.message_id,
       parse_mode: 'Markdown',
     });
-  } else if (messageText === '+') {
-    await ratingService.increase(ctx, replyMessage.message_id, userFrom, userTo);
-  } else if (messageText === '-') {
-    await ratingService.decrease(ctx, replyMessage.message_id, userFrom, userTo);
+
+    return;
   }
+
+  if (messageText !== '+' && messageText !== '-') {
+    return;
+  }
+
+  if (userFrom.id === userTo.id) {
+    const increasePhrases = [
+      'Ты думал, что ты умнее вождя? 🤨',
+      'У тебя не получится обмануть партию 👊',
+      'Злой хитрый Иван, у тебя ничего не получится 👎',
+    ];
+
+    const decreasePhrases = [
+      'Во еблан 🤣',
+      'Простой рабочий Иван, ты дурак 🤡',
+      'Ты совершил ошибку, но партия прощает тебе это 😇',
+    ];
+
+    const phrases = messageText === '+' ? increasePhrases : decreasePhrases;
+    const imageUrl = messageText === '+' ? SELF_INCREASE_IMAGE_URL : SELF_DECREASE_IMAGE_URL;
+
+    await ctx.replyWithPhoto(imageUrl, {
+      reply_to_message_id: replyMessage.message_id,
+      caption: randomElement(phrases),
+    });
+
+    return;
+  }
+
+  let text: string;
+
+  if (messageText === '+') {
+    userTo.rating += 150;
+
+    const gifts = await giftService.getGiftsToGive(userTo);
+    const userGifts = await giftService.createUserGifts(userTo, gifts);
+    await dataSource.manager.save(userGifts);
+
+    const phrases = [
+      'Великий вождь Xi доволен тобой 😁',
+      'Слава нашему великому вождю! 🤗',
+      'Партия гордится тобой! 😎',
+    ];
+
+    const congratulatoryText = gifts.length > 0
+      ? `*Ты получаешь от партии 🎉*\n${gifts.map(gift => `• ${gift.name}`).join('\n')}`
+      : randomElement(phrases);
+
+    text = `${mention(userTo)}, *+150* баллов социального рейтинга 👍\n\n${congratulatoryText}`;
+  } else {
+    userTo.rating -= 150;
+
+    const gifts = await giftService.getGiftsToTake(userTo);
+    await dataSource.manager.remove(gifts);
+
+    const phrases = [
+      'Великий вождь Xi недоволен тобой 😤',
+      'Ты расстраиваешь нашего великого вождя ☹️',
+      'Сейчас же прекрати позорить партию! 😡',
+    ];
+
+    const accusatoryText = gifts.length > 0
+      ? `*Партия отбирает у тебя 😧*\n${gifts.map(gift => `• ${gift.gift.name}`).join('\n')}`
+      : randomElement(phrases);
+
+    text = `${mention(userTo)}, *-150* баллов социального рейтинга 👎\n\n${accusatoryText}`;
+  }
+
+  const messageRating = ratingService.createMessageRating(userTo, replyMessage.message_id);
+  await dataSource.manager.save(messageRating);
+  await dataSource.manager.save(userTo);
+
+  await ctx.reply(text, { parse_mode: 'Markdown' });
 };

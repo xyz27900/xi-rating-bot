@@ -47,9 +47,8 @@ export class ToolService {
     return !!userTool;
   }
 
-  public async purchaseTool(user: User, tool: Tool): Promise<void> {
-    const userTool = this.userToolRepository.create({ user, tool });
-    await this.userToolRepository.save(userTool);
+  public async createUserTool(user: User, tool: Tool): Promise<UserTool> {
+    return this.userToolRepository.create({ user, tool });
   }
 }
 

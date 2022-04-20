@@ -3,7 +3,6 @@ import { dataSource } from '@/data.source';
 import { Gift } from '@/entity/gift.entity';
 import { User } from '@/entity/user.entity';
 import { UserGift } from '@/entity/user.gift.entity';
-import { randomElement } from '@/utils/array';
 
 export class GiftService {
   private readonly giftRepository: Repository<Gift>;
@@ -12,6 +11,12 @@ export class GiftService {
   constructor(giftRepository: Repository<Gift>, userGiftRepository: Repository<UserGift>) {
     this.giftRepository = giftRepository;
     this.userGiftRepository = userGiftRepository;
+  }
+
+  public async createUserGifts(user: User, gifts: Gift[]): Promise<UserGift[]> {
+    return gifts.map(gift => {
+      return this.userGiftRepository.create({ user, gift });
+    });
   }
 
   public async getUserGifts(user: User): Promise<Gift[]> {
@@ -45,37 +50,6 @@ export class GiftService {
       },
       relations: ['gift'],
     });
-  }
-
-  public async giveGiftsToUser(user: User, gifts: Gift[]): Promise<string> {
-    const userGifts = gifts.map(gift => {
-      return this.userGiftRepository.create({ user, gift });
-    });
-    await this.userGiftRepository.save(userGifts);
-
-    const phrases = [
-      'Великий вождь Xi доволен тобой 😁',
-      'Слава нашему великому вождю! 🤗',
-      'Партия гордится тобой! 😎',
-    ];
-
-    return gifts.length > 0
-      ? `_Ты получаешь от партии 🎉_\n${gifts.map(gift => `• ${gift.name}`).join('\n')}`
-      : randomElement(phrases);
-  }
-
-  public async takeGiftsFromUser(user: User, gifts: UserGift[]): Promise<string> {
-    await this.userGiftRepository.remove(gifts);
-
-    const phrases = [
-      'Великий вождь Xi недоволен тобой 😤',
-      'Ты расстраиваешь нашего великого вождя ☹️',
-      'Сейчас же прекрати позорить партию! 😡',
-    ];
-
-    return gifts.length > 0
-      ? `_Партия отбирает у тебя 😧_\n${gifts.map(gift => `• ${gift.gift.name}`).join('\n')}`
-      : randomElement(phrases);
   }
 }
 

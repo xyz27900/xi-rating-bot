@@ -1,4 +1,5 @@
 import { Middleware } from 'grammy';
+import { dataSource } from '@/data.source';
 import { toolService } from '@/service/tool.service';
 import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
@@ -28,11 +29,7 @@ export const shopCallback: Middleware = async (ctx) => {
   const userHasTool = await toolService.checkIfUserHasTool(user, tool);
   if (userHasTool) {
     const text = `Тебе это без надобности. У тебя уже есть ${tool.description}`;
-
-    await ctx.answerCallbackQuery({
-      text,
-      show_alert: true,
-    });
+    await ctx.answerCallbackQuery({ text, show_alert: true });
   } else if (user.balance < tool.price) {
     const notEnoughMoneyText = user.balance > 0
       ? `У тебя есть только Ұ${user.balance}`
@@ -40,15 +37,14 @@ export const shopCallback: Middleware = async (ctx) => {
 
     const text = `${tool.description} стоит Ұ${tool.price}\n${notEnoughMoneyText}`;
 
-    await ctx.answerCallbackQuery({
-      text,
-      show_alert: true,
-    });
+    await ctx.answerCallbackQuery({ text, show_alert: true });
   } else {
     user.balance -= tool.price;
 
-    await toolService.purchaseTool(user, tool);
-    await userService.save(user);
+    const userTool = await toolService.createUserTool(user, tool);
+
+    await dataSource.manager.save(userTool);
+    await dataSource.manager.save(user);
 
     const text = [
       `${mention(user)}, *${tool.description.toLowerCase()}* - это отличная покупка! 👍`,

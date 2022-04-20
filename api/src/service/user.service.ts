@@ -10,17 +10,11 @@ export class UserService {
   }
 
   public async createUser(object: DeepPartial<User>): Promise<User> {
-    const user = this.userRepository.create(object);
-    await this.save(user);
-    return user;
+    return this.userRepository.create(object);
   }
 
   public async getUserById(id: number): Promise<User | null> {
     return await this.userRepository.findOneBy({ id });
-  }
-
-  public async save(user: User): Promise<User> {
-    return await this.userRepository.save(user);
   }
 }
 

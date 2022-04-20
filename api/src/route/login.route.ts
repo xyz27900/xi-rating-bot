@@ -8,8 +8,8 @@ import { ApiRouteHandler, AuthApiRequest } from '@/types/api';
 export const loginRoute: ApiRouteHandler<LoginReply> = async (req, res): Promise<void> => {
   const { user, harvestLink } = req as AuthApiRequest;
 
-  const riceCollect = await riceService.getUserRiceCollect(user);
-  if (riceCollect && riceCollect.nextTime > new Date()) {
+  const harvest = await riceService.getUserHarvest(user);
+  if (harvest && harvest.nextTime > new Date()) {
     throw errHarvestTimeout;
   }
 
