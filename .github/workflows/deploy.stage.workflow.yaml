@@ -103,7 +103,7 @@ jobs:
         run: echo ${{ secrets.HEROKU_API_KEY }} | docker login -u ${{ secrets.HEROKU_EMAIL }} registry.heroku.com --password-stdin
 
       - name: Build Docker image
-        run: docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=staging --tag registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}-stage/web .
+        run: docker build --build-arg ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }} --build-arg NODE_ENV=stage --tag registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}-stage/web .
 
       - name: Push Docker image
         run: docker push registry.heroku.com/${{ secrets.HEROKU_APP_NAME }}-stage/web
