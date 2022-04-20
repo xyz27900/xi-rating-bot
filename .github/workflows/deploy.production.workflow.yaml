@@ -122,10 +122,10 @@ jobs:
           message: |
             <b>[Production] Deployed to Heroku ✅</b>
 
-            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to <i>production environment</i>
+            New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <i>production environment</i>
 
             <i>Bot</i> @xi_rating_bot
 
-            <i>Build SHA</i> `${{ github.sha }}`
+            <i>Build SHA</i> <code>${{ github.sha }}</code>
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
