@@ -127,7 +127,9 @@ jobs:
           format: html
           disable_web_page_preview: true
           message: |
-            <b>[Stage] Deployed to Heroku ✅</b>
+            #stage #release
+
+            <b>Deployed to Heroku ✅</b>
 
             New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>stage environment</b>
 
