@@ -27,6 +27,6 @@ jobs:
 
             ${{ github.event.release.body }}
 
-            <i>Бот</i> @xi_rating_bot
+            <b>🤖 Бот</b> @xi_rating_bot
 
-            <i>Текущая версия</i> ${{ steps.version.outputs.version }}
+            <b>🏷 Текущая версия</b> <code>${{ steps.version.outputs.version }}</code>

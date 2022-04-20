@@ -129,10 +129,10 @@ jobs:
           message: |
             <b>[Stage] Deployed to Heroku ✅</b>
 
-            New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <i>stage environment</i>
+            New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>stage environment</b>
 
-            <i>Bot</i> @xi_rating_stage_bot
+            <b>🤖 Bot</b> @xi_rating_stage_bot
 
-            <i>Build SHA</i> <code>${{ github.sha }}</code>
+            <b>🔐 Build SHA</b> <code>${{ github.sha }}</code>
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
