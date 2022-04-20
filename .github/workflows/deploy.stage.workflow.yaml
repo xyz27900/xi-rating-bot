@@ -124,15 +124,15 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_DEV_CHANNEL_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          format: markdown
+          format: html
           disable_web_page_preview: true
           message: |
-            *[Stage] Deployed to Heroku ✅*
+            <b>[Stage] Deployed to Heroku ✅</b>
 
-            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to __stage environment__
+            New build [${{ steps.short_sha.outputs.short_sha }}](${{ env.GITHUB_LINK }}) was successfully deployed to <i>stage environment</i>
 
-            __Bot__ @xi_rating_stage_bot
+            <i>Bot</i> @xi_rating_stage_bot
 
-            __Build SHA__ `${{ github.sha }}`
+            <i>Build SHA</i> `${{ github.sha }}`
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}

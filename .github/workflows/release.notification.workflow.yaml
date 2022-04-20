@@ -21,12 +21,12 @@ jobs:
         with:
           to: ${{ secrets.TELEGRAM_RELEASE_CHANNEL_ID }}
           token: ${{ secrets.TELEGRAM_BOT_TOKEN }}
-          format: markdown
+          format: html
           message: |
-            🆕 *Обновление социального рейтинга* 🆕
+            <b>🆕 Обновление социального рейтинга 🆕</b>
 
             ${{ github.event.release.body }}
 
-            __Бот__ @xi_rating_bot
+            <i>Бот</i> @xi_rating_bot
 
-            __Текущая версия__ ${{ steps.version.outputs.version }}
+            <i>Текущая версия</i> ${{ steps.version.outputs.version }}
