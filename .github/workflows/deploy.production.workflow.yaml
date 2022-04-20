@@ -112,6 +112,10 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
+      - name: Get the version
+        id: version
+        run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
+
       - name: Send message to Telegram channel
         uses: appleboy/telegram-action@master
         with:
@@ -127,7 +131,7 @@ jobs:
             <b>🤖 Bot</b>
             @xi_rating_bot
 
-            <b>🔐 Build SHA</b>
-            <code>${{ github.sha }}</code>
+            <b>🏷 Version</b>
+            ${{ steps.version.outputs.version }}
         env:
           GITHUB_LINK: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
