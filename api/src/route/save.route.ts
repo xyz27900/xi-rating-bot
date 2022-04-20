@@ -48,5 +48,5 @@ export const saveRoute: ApiRouteHandler<SaveReply> = async (req, res) => {
   res.status(200).send();
 
   await bot.api.sendMessage(harvestLink.chatId, text, { parse_mode: 'Markdown' });
-  await bot.api.editMessageReplyMarkup(harvestLink.chatId, harvestLink.messageId);
+  await bot.api.deleteMessage(harvestLink.chatId, harvestLink.messageId);
 };
