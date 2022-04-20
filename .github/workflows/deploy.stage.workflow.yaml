@@ -129,7 +129,7 @@ jobs:
           message: |
             #stage #release
 
-            <b>Deployed to Heroku ✅</b>
+            <b>✅ Deployed to Heroku</b>
 
             New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>stage environment</b>
 
