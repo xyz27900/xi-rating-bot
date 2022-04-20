@@ -1,3 +1,4 @@
+import 'reflect-metadata';
 import * as Sentry from '@sentry/node';
 import * as Tracing from '@sentry/tracing';
 import { logger } from '@xyz27900/xi-rating-bot-common/build/cjs/utils/logger';

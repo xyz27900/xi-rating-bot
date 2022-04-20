@@ -1,6 +1,5 @@
 import { Middleware } from 'grammy';
-import { giftService } from '@/service/gift.service';
-import { toolService } from '@/service/tool.service';
+import { giftService, toolService } from '@/core/services';
 import { AuthBotContext } from '@/types/bot';
 import { mention } from '@/utils/telegram';
 

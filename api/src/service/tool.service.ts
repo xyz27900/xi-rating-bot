@@ -1,16 +1,19 @@
+import { inject, injectable } from 'tsyringe';
 import { In, Not, Repository } from 'typeorm';
-import { dataSource } from '@/data.source';
 import { Tool } from '@/entity/tool.entity';
 import { User } from '@/entity/user.entity';
 import { UserTool } from '@/entity/user.tool.entity';
+import { TOOL_REPOSITORY } from '@/repository/tool.repository';
+import { USER_TOOL_REPOSITORY } from '@/repository/user.tool.repository';
 
+@injectable()
 export class ToolService {
   private readonly toolRepository: Repository<Tool>;
   private readonly userToolRepository: Repository<UserTool>;
 
   constructor(
-    toolRepository: Repository<Tool>,
-    userToolRepository: Repository<UserTool>
+    @inject(TOOL_REPOSITORY) toolRepository: Repository<Tool>,
+    @inject(USER_TOOL_REPOSITORY) userToolRepository: Repository<UserTool>
   ) {
     this.toolRepository = toolRepository;
     this.userToolRepository = userToolRepository;
@@ -51,8 +54,3 @@ export class ToolService {
     return this.userToolRepository.create({ user, tool });
   }
 }
-
-export const toolService = new ToolService(
-  dataSource.getRepository(Tool),
-  dataSource.getRepository(UserTool),
-);

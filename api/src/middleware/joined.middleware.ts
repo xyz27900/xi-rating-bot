@@ -1,5 +1,5 @@
 import { MiddlewareFn } from 'grammy';
-import { userService } from '@/service/user.service';
+import { userService } from '@/core/services';
 import { AuthBotContext } from '@/types/bot';
 
 export const joinedMiddleware: MiddlewareFn = async (ctx, next) => {

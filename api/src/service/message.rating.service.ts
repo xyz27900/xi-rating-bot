@@ -1,12 +1,14 @@
+import { inject, injectable } from 'tsyringe';
 import { Repository } from 'typeorm';
-import { dataSource } from '@/data.source';
 import { MessageRating } from '@/entity/message.rating.entity';
 import { User } from '@/entity/user.entity';
+import { MESSAGE_RATING_REPOSITORY } from '@/repository/message.rating.repository';
 
+@injectable()
 export class MessageRatingService {
   private readonly messageRatingRepository: Repository<MessageRating>;
 
-  constructor(messageRatingRepository: Repository<MessageRating>) {
+  constructor(@inject(MESSAGE_RATING_REPOSITORY) messageRatingRepository: Repository<MessageRating>) {
     this.messageRatingRepository = messageRatingRepository;
   }
 
@@ -22,5 +24,3 @@ export class MessageRatingService {
     return !!messageRating;
   }
 }
-
-export const ratingService = new MessageRatingService(dataSource.getRepository(MessageRating));

@@ -1,9 +1,7 @@
 import { Middleware } from 'grammy';
 import { SELF_DECREASE_IMAGE_URL, SELF_INCREASE_IMAGE_URL } from '@/config';
+import { giftService, messageRatingService, userService } from '@/core/services';
 import { dataSource } from '@/data.source';
-import { giftService } from '@/service/gift.service';
-import { ratingService } from '@/service/message.rating.service';
-import { userService } from '@/service/user.service';
 import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';
 
@@ -31,7 +29,7 @@ export const messageHandler: Middleware = async (ctx) => {
     return;
   }
 
-  const isMessageRated = await ratingService.checkIfAlreadyRated(userFrom, replyMessage.message_id);
+  const isMessageRated = await messageRatingService.checkIfAlreadyRated(userFrom, replyMessage.message_id);
   if (isMessageRated) {
     const text = [
       `${mention(userFrom)}, ты уже оценил это сообщение!`,
@@ -113,7 +111,7 @@ export const messageHandler: Middleware = async (ctx) => {
     text = `${mention(userTo)}, *-150* баллов социального рейтинга 👎\n\n${accusatoryText}`;
   }
 
-  const messageRating = ratingService.createMessageRating(userTo, replyMessage.message_id);
+  const messageRating = messageRatingService.createMessageRating(userTo, replyMessage.message_id);
   await dataSource.manager.save(messageRating);
   await dataSource.manager.save(userTo);
 

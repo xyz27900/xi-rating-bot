@@ -1,6 +1,6 @@
 import { Middleware } from 'grammy';
+import { userService } from '@/core/services';
 import { dataSource } from '@/data.source';
-import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
 
 export const joinCommand: Middleware = async (ctx) => {

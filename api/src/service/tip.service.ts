@@ -1,5 +1,7 @@
+import { injectable } from 'tsyringe';
 import { randomElement } from '@/utils/array';
 
+@injectable()
 export class TipService {
   private static extractData(string: string): [string, string] | null {
     const match = string.match(/(.*)\sили\s(.*[^?])/i);
@@ -36,5 +38,3 @@ export class TipService {
     }
   }
 }
-
-export const tipService = new TipService();

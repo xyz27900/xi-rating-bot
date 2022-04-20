@@ -1,17 +1,20 @@
+import { inject, injectable } from 'tsyringe';
 import { Repository } from 'typeorm';
-import { dataSource } from '@/data.source';
 import { RiceCollect } from '@/entity/rice.collect.entity';
 import { RiceCollectLink } from '@/entity/rice.collect.link.entity';
 import { User } from '@/entity/user.entity';
+import { HARVEST_LINK_REPOSITORY } from '@/repository/harvest.link.repository';
+import { HARVEST_REPOSITORY } from '@/repository/harvest.repository';
 import { randomSubjects } from '@/utils/subject';
 
-export class RiceService {
+@injectable()
+export class HarvestService {
   private readonly harvestRepository: Repository<RiceCollect>;
   private readonly harvestLinkRepository: Repository<RiceCollectLink>;
 
   constructor(
-    harvestRepository: Repository<RiceCollect>,
-    harvestLinkRepository: Repository<RiceCollectLink>
+    @inject(HARVEST_REPOSITORY) harvestRepository: Repository<RiceCollect>,
+    @inject(HARVEST_LINK_REPOSITORY) harvestLinkRepository: Repository<RiceCollectLink>
   ) {
     this.harvestRepository = harvestRepository;
     this.harvestLinkRepository = harvestLinkRepository;
@@ -45,8 +48,3 @@ export class RiceService {
     });
   }
 }
-
-export const riceService = new RiceService(
-  dataSource.getRepository(RiceCollect),
-  dataSource.getRepository(RiceCollectLink)
-);

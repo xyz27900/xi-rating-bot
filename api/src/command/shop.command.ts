@@ -1,5 +1,5 @@
 import { InlineKeyboard, Middleware } from 'grammy';
-import { toolService } from '@/service/tool.service';
+import { toolService } from '@/core/services';
 import { AuthBotContext } from '@/types/bot';
 import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';

@@ -1,8 +1,8 @@
 import { InlineKeyboard, Middleware } from 'grammy';
 import { v4 } from 'uuid';
 import { DOMAIN } from '@/config';
+import { harvestService } from '@/core/services';
 import { dataSource } from '@/data.source';
-import { riceService } from '@/service/rice.service';
 import { AuthBotContext } from '@/types/bot';
 import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';
@@ -14,7 +14,7 @@ export const riceCommand: Middleware = async (ctx) => {
     return;
   }
 
-  let harvestLink = await riceService.getUserHarvestLink(user);
+  let harvestLink = await harvestService.getUserHarvestLink(user);
   if (harvestLink) {
     const text = `${mention(user)}, ты уже собрался собирать рис!`;
 
@@ -26,7 +26,7 @@ export const riceCommand: Middleware = async (ctx) => {
     return;
   }
 
-  const harvest = await riceService.getUserHarvest(user);
+  const harvest = await harvestService.getUserHarvest(user);
   if (harvest && harvest.nextTime > new Date()) {
     const diff = harvest.nextTime.getTime() - new Date().getTime();
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -61,6 +61,6 @@ export const riceCommand: Middleware = async (ctx) => {
     parse_mode: 'Markdown',
   });
 
-  harvestLink = await riceService.createUserHarvestLink(linkUUID, user, chatId, message.message_id);
+  harvestLink = await harvestService.createUserHarvestLink(linkUUID, user, chatId, message.message_id);
   await dataSource.manager.save(harvestLink);
 };

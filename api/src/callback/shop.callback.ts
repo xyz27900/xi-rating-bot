@@ -1,7 +1,6 @@
 import { Middleware } from 'grammy';
+import { toolService, userService } from '@/core/services';
 import { dataSource } from '@/data.source';
-import { toolService } from '@/service/tool.service';
-import { userService } from '@/service/user.service';
 import { mention } from '@/utils/telegram';
 
 export const shopCallback: Middleware = async (ctx) => {

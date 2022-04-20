@@ -1,14 +1,20 @@
+import { inject, injectable } from 'tsyringe';
 import { In, LessThanOrEqual, MoreThan, Not, Repository } from 'typeorm';
-import { dataSource } from '@/data.source';
 import { Gift } from '@/entity/gift.entity';
 import { User } from '@/entity/user.entity';
 import { UserGift } from '@/entity/user.gift.entity';
+import { GIFT_REPOSITORY } from '@/repository/gift.repository';
+import { USER_GIFT_REPOSITORY } from '@/repository/user.gift.repository';
 
+@injectable()
 export class GiftService {
   private readonly giftRepository: Repository<Gift>;
   private readonly userGiftRepository: Repository<UserGift>;
 
-  constructor(giftRepository: Repository<Gift>, userGiftRepository: Repository<UserGift>) {
+  constructor(
+    @inject(GIFT_REPOSITORY) giftRepository: Repository<Gift>,
+    @inject(USER_GIFT_REPOSITORY) userGiftRepository: Repository<UserGift>
+  ) {
     this.giftRepository = giftRepository;
     this.userGiftRepository = userGiftRepository;
   }
@@ -52,8 +58,3 @@ export class GiftService {
     });
   }
 }
-
-export const giftService = new GiftService(
-  dataSource.getRepository(Gift),
-  dataSource.getRepository(UserGift),
-);

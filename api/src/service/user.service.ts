@@ -1,11 +1,13 @@
+import { inject, injectable } from 'tsyringe';
 import { DeepPartial, Repository } from 'typeorm';
-import { dataSource } from '@/data.source';
 import { User } from '@/entity/user.entity';
+import { USER_REPOSITORY } from '@/repository/user.repository';
 
+@injectable()
 export class UserService {
   private readonly userRepository: Repository<User>;
 
-  constructor(repository: Repository<User>) {
+  constructor(@inject(USER_REPOSITORY) repository: Repository<User>) {
     this.userRepository = repository;
   }
 
@@ -17,5 +19,3 @@ export class UserService {
     return await this.userRepository.findOneBy({ id });
   }
 }
-
-export const userService = new UserService(dataSource.getRepository(User));

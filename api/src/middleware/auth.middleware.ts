@@ -1,3 +1,4 @@
+import { harvestService, userService } from '@/core/services';
 import {
   errHarvestLinkNotFound,
   errInvalidHash,
@@ -5,8 +6,6 @@ import {
   errInvalidQuery,
   errUserNotFound,
 } from '@/error/api/errors';
-import { riceService } from '@/service/rice.service';
-import { userService } from '@/service/user.service';
 import { ApiMiddleware, AuthApiRequest } from '@/types/api';
 import { hashValidator } from '@/validators/hash.validator';
 
@@ -32,7 +31,7 @@ export const authMiddleware: ApiMiddleware = async (req, res, next) => {
     throw errUserNotFound;
   }
 
-  const harvestLink = await riceService.getUserHarvestLink(user);
+  const harvestLink = await harvestService.getUserHarvestLink(user);
   if (!harvestLink) {
     throw errHarvestLinkNotFound;
   }

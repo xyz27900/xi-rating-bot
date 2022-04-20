@@ -1,9 +1,8 @@
 import { SaveReply } from '@xyz27900/xi-rating-bot-common/build/cjs/dto/save.dto';
 import { bot } from '@/core/bot';
+import { giftService, harvestService } from '@/core/services';
 import { dataSource } from '@/data.source';
 import { errInvalidAmount } from '@/error/api/errors';
-import { giftService } from '@/service/gift.service';
-import { riceService } from '@/service/rice.service';
 import { ApiRouteHandler, AuthApiRequest } from '@/types/api';
 import { randomElement } from '@/utils/array';
 import { mention } from '@/utils/telegram';
@@ -56,7 +55,7 @@ export const saveRoute: ApiRouteHandler<SaveReply> = async (req, res) => {
     ].join('\n\n');
   }
 
-  const harvest = await riceService.updateUserHarvest(user);
+  const harvest = await harvestService.updateUserHarvest(user);
   await dataSource.manager.save(harvest);
   await dataSource.manager.remove(harvestLink);
 

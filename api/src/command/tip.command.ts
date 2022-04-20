@@ -1,5 +1,5 @@
 import { Middleware } from 'grammy';
-import { tipService } from '@/service/tip.service';
+import { tipService } from '@/core/services';
 import { AuthBotContext } from '@/types/bot';
 import { mention } from '@/utils/telegram';
 
