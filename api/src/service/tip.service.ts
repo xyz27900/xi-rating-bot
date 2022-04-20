@@ -14,7 +14,7 @@ export class TipService {
   public process(data: string): string {
     const items = TipService.extractData(data);
     if (!items) {
-      return 'чтобы спросить совет у партии, напиши\n\n```\/tip да или нет```';
+      return 'чтобы спросить совет у партии, напиши\n\n/tip *да* или *нет*';
     }
 
     if (Math.random() < 0.1) {
