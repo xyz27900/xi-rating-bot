@@ -119,6 +119,10 @@ jobs:
         env:
           HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
 
+      - name: Get short SHA
+        id: short_sha
+        run: echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+
       - name: Get the version
         id: version
         run: echo ::set-output name=version::${GITHUB_REF/refs\/tags\//}
@@ -135,7 +139,7 @@ jobs:
 
             <b>✅ Deployed to Heroku</b>
 
-            New build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>production environment</b>
+            Build <a href="${{ env.GITHUB_LINK }}">${{ steps.short_sha.outputs.short_sha }}</a> was successfully deployed to <b>production environment</b>
 
             <b>🤖 Bot</b>
             @xi_rating_bot
