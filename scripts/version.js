@@ -65,6 +65,10 @@ const updatePackageFiles = (files, version) => {
   })
 }
 
+const updateDependencies = () => {
+  childProcess.execSync('npm install');
+}
+
 const commitAndTag = (version) => {
   childProcess.execSync(`git add .`);
   childProcess.execSync(`git commit -m "v${version}"`);
@@ -80,6 +84,7 @@ const bumpVersion = () => {
     const newVersion = updateVersion(currentVersion, type);
 
     updatePackageFiles(files, newVersion);
+    updateDependencies();
     commitAndTag(newVersion);
   } catch (error) {
     console.error(error.message);
