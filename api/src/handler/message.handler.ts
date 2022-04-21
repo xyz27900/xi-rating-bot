@@ -111,7 +111,7 @@ export const messageHandler: Middleware = async (ctx) => {
     text = `${mention(userTo)}, *-150* баллов социального рейтинга 👎\n\n${accusatoryText}`;
   }
 
-  const messageRating = messageRatingService.createMessageRating(userTo, replyMessage.message_id);
+  const messageRating = messageRatingService.createMessageRating(userFrom, replyMessage.message_id);
   await dataSource.manager.save(messageRating);
   await dataSource.manager.save(userTo);
 
