@@ -3,7 +3,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryColumn } from 'typeorm';
 import { User } from '@/entity/user.entity';
 
 @Entity()
-export class RiceCollectLink {
+export class HarvestLink {
   @PrimaryColumn({ type: 'uuid' })
   id!: string;
 

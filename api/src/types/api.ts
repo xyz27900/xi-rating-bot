@@ -1,6 +1,6 @@
 import { ApiErrorData } from '@xyz27900/xi-rating-bot-common/build/cjs/api/error';
 import { NextFunction, Request as ExpressRequest, Response as ExpressResponse } from 'express';
-import { RiceCollectLink } from '@/entity/rice.collect.link.entity';
+import { HarvestLink } from '@/entity/harvest.link.entity';
 import { User } from '@/entity/user.entity';
 
 export interface ApiQuery {
@@ -12,7 +12,7 @@ export type ApiResponse<ResBody = string | Record<string, string>> = ExpressResp
 
 export type AuthApiRequest<ReqBody = Record<string, string>, ReqQuery = ApiQuery> = ApiRequest<ReqBody, ReqQuery> & {
   user: User;
-  harvestLink: RiceCollectLink;
+  harvestLink: HarvestLink;
 };
 
 export type ApiMiddleware = (req: ApiRequest, res: ApiResponse, next: NextFunction) => Promise<void> | void;

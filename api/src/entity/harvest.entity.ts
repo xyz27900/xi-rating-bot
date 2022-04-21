@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'ty
 import { User } from '@/entity/user.entity';
 
 @Entity()
-export class RiceCollect {
+export class Harvest {
   @PrimaryGeneratedColumn()
   id!: number;
 
