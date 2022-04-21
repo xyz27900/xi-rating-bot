@@ -111,11 +111,13 @@ export const messageHandler: Middleware = async (ctx) => {
       'Сейчас же прекрати позорить партию! 😡',
     ];
 
+    const ratingText = userTo.rating > 0 ? '' : '\nПартия не может забрать больше баллов, потому что твой рейтинг стал равен нулю 😂';
+
     const accusatoryText = gifts.length > 0
       ? `*Партия отбирает у тебя 😧*\n${gifts.map(gift => `• ${gift.gift.name}`).join('\n')}`
       : randomElement(phrases);
 
-    text = `${mention(userTo)}, *-${ratingValue}* баллов социального рейтинга 👎\n\n${accusatoryText}`;
+    text = `${mention(userTo)}, *-${ratingValue}* баллов социального рейтинга 👎${ratingText}\n\n${accusatoryText}`;
   }
 
   const messageRating = messageRatingService.createMessageRating(userFrom, replyMessage.message_id);
