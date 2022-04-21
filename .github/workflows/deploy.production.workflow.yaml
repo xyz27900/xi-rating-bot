@@ -74,6 +74,12 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
 
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://npm.pkg.github.com'
+
       - name: Install dependencies
         run: npm install
 
@@ -85,8 +91,9 @@ jobs:
       - name: Publish "common" package
         run: |
           cd common
-          echo //npm.pkg.github.com/:_authToken=${{ secrets.ACCESS_TOKEN }} >> .npmrc
           npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
   deploy:
     needs: npm-packages
