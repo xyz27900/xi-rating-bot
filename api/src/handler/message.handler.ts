@@ -99,7 +99,8 @@ export const messageHandler: Middleware = async (ctx) => {
 
     text = `${mention(userTo)}, *+150* баллов социального рейтинга 👍\n\n${congratulatoryText}`;
   } else {
-    userTo.rating = Math.max(0, userTo.rating - 150);
+    const ratingValue = Math.min(userTo.rating, 150);
+    userTo.rating -= ratingValue;
 
     const gifts = await giftService.getGiftsToTake(userTo);
     await dataSource.manager.remove(gifts);
@@ -114,7 +115,7 @@ export const messageHandler: Middleware = async (ctx) => {
       ? `*Партия отбирает у тебя 😧*\n${gifts.map(gift => `• ${gift.gift.name}`).join('\n')}`
       : randomElement(phrases);
 
-    text = `${mention(userTo)}, *-150* баллов социального рейтинга 👎\n\n${accusatoryText}`;
+    text = `${mention(userTo)}, *-${ratingValue}* баллов социального рейтинга 👎\n\n${accusatoryText}`;
   }
 
   const messageRating = messageRatingService.createMessageRating(userFrom, replyMessage.message_id);
