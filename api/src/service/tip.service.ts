@@ -34,7 +34,7 @@ export class TipService {
         'не нужно сомневаться, конечно же',
       ];
 
-      return `${randomElement(phrases)} ${randomElement(items)}`;
+      return `${randomElement(phrases)} *${randomElement(items)}*`;
     }
   }
 }
